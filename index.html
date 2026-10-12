@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Compare two website designs for Ryan's MLB matchup predictor.">
+<title>MLB Matchup Predictor | Design review</title>
+<style>
+  :root { color-scheme: light; --ink:#18242c; --muted:#5c6870; --hairline:#d8dedf; --accent:#254656; --paper:#f8f8f5; }
+  *, *::before, *::after { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { width:min(1100px, calc(100% - 48px)); margin:auto; padding:64px 0 90px; }
+  .eyebrow { color:#916451; font-size:11px; text-transform:uppercase; letter-spacing:.14em; font-weight:750; }
+  h1 { font:normal clamp(37px,5.1vw,57px)/1.1 Georgia,serif; letter-spacing:-.045em; margin:12px 0 17px; }
+  .intro { color:var(--muted); max-width:660px; line-height:1.65; margin:0 0 36px; font-size:15px; }
+  .versions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+  article { min-width:0; background:#fff; border:1px solid var(--hairline); }
+  .preview { display:block; height:270px; overflow:hidden; border-bottom:1px solid var(--hairline); background:#e8eaeb; }
+  .preview img { display:block; width:100%; height:auto; }
+  .content { padding:26px; }
+  .version { color:#8a6b59; font-size:11px; font-weight:750; letter-spacing:.13em; text-transform:uppercase; }
+  h2 { font:normal 28px/1.18 Georgia,serif; letter-spacing:-.025em; margin:9px 0 10px; }
+  .desc { color:var(--muted); font-size:14px; line-height:1.65; min-height:46px; margin:0 0 20px; }
+  .button { display:inline-flex; justify-content:center; align-items:center; min-height:43px; padding:10px 16px; color:#fff; background:var(--accent); border:1px solid var(--accent); text-decoration:none; font-weight:650; font-size:13px; }
+  .button:hover,.button:focus-visible { background:#19333f; }
+  .smallprint { border-top:1px solid var(--hairline); padding-top:24px; color:var(--muted); font-size:12px; line-height:1.7; margin:37px 0 0; }
+  @media(max-width:660px){main{width:calc(100% - 30px); padding:38px 0 60px}.versions{grid-template-columns:1fr;gap:16px}.preview{height:210px}.content{padding:20px}.desc{min-height:0}h2{font-size:26px}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Ryan's student project / design review</p>
+  <h1>Two directions. One predictor.</h1>
+  <p class="intro">These two working versions use the same MLB statistics and team-strength calculations. Choose a style to try the predictor and compare how each one presents the results.</p>
+  <section class="versions" aria-label="Website design options">
+    <article>
+      <a class="preview" href="./v1/" aria-label="Open Version 1: Original dark dashboard"><img src="./assets/v1-preview.png" alt="Preview of the original dark baseball analytics dashboard" loading="lazy"></a>
+      <div class="content">
+        <div class="version">Version 01</div>
+        <h2>Original dashboard</h2>
+        <p class="desc">A bold, dark sports-analytics look with prominent results and graphic comparison panels.</p>
+        <a class="button" href="./v1/">View working version →</a>
+      </div>
+    </article>
+    <article>
+      <a class="preview" href="./v2/" aria-label="Open Version 2: Refined editorial design"><img src="./assets/v2-preview.png" alt="Preview of the light editorial-style baseball statistics site" loading="lazy"></a>
+      <div class="content">
+        <div class="version">Version 02</div>
+        <h2>Editorial design</h2>
+        <p class="desc">A quieter, research-oriented presentation with pared-back typography and minimal visual noise.</p>
+        <a class="button" href="./v2/">View working version →</a>
+      </div>
+    </article>
+  </section>
+  <p class="smallprint">Design comparison for Ryan's MLB Matchup Predictor. Both versions display relative model score shares, not validated game-win probabilities. Data comes from the original supplied project files.</p>
+</main>
+</body>
+</html>
