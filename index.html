@@ -98,6 +98,20 @@
     .method p { font-size: 13px; color: #5d676e; margin: 0 0 10px; line-height: 1.75; }
     .method .disclaimer { color: #725647; }
     footer { border-top: 1px solid var(--hairline); padding: 23px 0 42px; color: var(--muted); background: var(--paper); font-size: 11px; line-height: 1.8; }
+
+    /* Team marks stay small: identification, not decoration. */
+    .team-select { position: relative; }
+    .team-select select { padding-left: 57px; }
+    .select-logo { position: absolute; width: 30px; height: 30px; left: 14px; top: 50%; transform: translateY(-50%); object-fit: contain; pointer-events: none; }
+    .team-identity { display: flex; align-items: center; gap: 10px; min-height: 56px; }
+    .team-box.away .team-identity { justify-content: flex-end; }
+    .team-identity > div { min-width: 0; }
+    .result-logo { width: 52px; height: 52px; object-fit: contain; flex: 0 0 auto; }
+    .select-logo[hidden], .result-logo[hidden] { display: none; }
+    @media (max-width: 620px) {
+      .team-identity { gap: 5px; align-items: flex-start; min-height: 52px; }
+      .result-logo { width: 32px; height: 32px; }
+    }
     @media (max-width: 850px) {
       .hero { grid-template-columns: 1fr; gap: 22px; }
       .hero-facts { display: grid; grid-template-columns: 1fr repeat(3,minmax(0,1fr)); align-items: center; gap: 12px; }
@@ -160,10 +174,10 @@
         <h2 id="choose-title">Pick your teams</h2>
         <p class="panel-lead">Choose any two clubs from the dataset.</p>
         <label for="team-a">First team</label>
-        <select id="team-a" aria-label="First MLB team"></select>
+        <div class="team-select"><img id="select-logo-a" class="select-logo" alt="" aria-hidden="true"><select id="team-a" aria-label="First MLB team"></select></div>
         <div class="versus" aria-hidden="true">versus</div>
         <label for="team-b">Second team</label>
-        <select id="team-b" aria-label="Second MLB team"></select>
+        <div class="team-select"><img id="select-logo-b" class="select-logo" alt="" aria-hidden="true"><select id="team-b" aria-label="Second MLB team"></select></div>
         <button class="primary" id="compare" type="button">Compare teams &rarr;</button>
         <p class="error" id="error" role="alert" aria-live="polite"></p>
         <p class="tiny-note">Uses a fixed statistical snapshot. No live lineups, odds or game-day adjustments.</p>
@@ -172,9 +186,9 @@
         <div class="section-head"><p class="overline">Comparison</p><span class="section-index">02</span></div>
         <h2 class="result-title" id="results-title">The model's result</h2>
         <div class="team-grid" aria-live="polite" aria-atomic="true">
-          <div class="team-box"><div class="team-code" id="badge-a">NYY</div><div class="team-name" id="name-a">New York Yankees</div><p class="team-percent" id="percent-a">54.8%</p></div>
+          <div class="team-box"><div class="team-identity"><img id="result-logo-a" class="result-logo" alt="" aria-hidden="true"><div><div class="team-code" id="badge-a">NYY</div><div class="team-name" id="name-a">New York Yankees</div></div></div><p class="team-percent" id="percent-a">54.8%</p></div>
           <div class="vs">VS</div>
-          <div class="team-box away"><div class="team-code" id="badge-b">NYM</div><div class="team-name" id="name-b">New York Mets</div><p class="team-percent" id="percent-b">45.2%</p></div>
+          <div class="team-box away"><div class="team-identity"><div><div class="team-code" id="badge-b">NYM</div><div class="team-name" id="name-b">New York Mets</div></div><img id="result-logo-b" class="result-logo" alt="" aria-hidden="true"></div><p class="team-percent" id="percent-b">45.2%</p></div>
         </div>
         <div class="score-track" role="img" id="score-track" aria-label="Model score share: Yankees 54.8 percent, Mets 45.2 percent"><span class="first" id="share-a"></span><span class="second"></span></div>
         <div class="score-caption"><span>Share of combined team score</span><span>Not predicted win probability</span></div>
@@ -213,7 +227,7 @@
       </div>
     </section>
   </main>
-  <footer><div class="wrap">Model and original analysis by Ryan. Website built with assistance. Independent project; not affiliated with Major League Baseball.</div></footer>
+  <footer><div class="wrap">Model and original analysis by Ryan. Website built with assistance. Independent project; not affiliated with Major League Baseball. Team logos belong to their respective owners.</div></footer>
   <script src="./scores.js"></script>
   <script>
     'use strict';
@@ -240,6 +254,57 @@
       'Toronto Blue Jays':'TOR', 'Washington Nationals':'WSH'
     };
     const $ = id => document.getElementById(id);
+    // Official MLB team IDs identify the SVG marks from MLB's image CDN.
+    // ESPN's CDN serves as a fallback if a primary image fails to load.
+    const teamIds = {
+      'Arizona Diamondbacks': 109,
+      'Athletics': 133,
+      'Atlanta Braves': 144,
+      'Baltimore Orioles': 110,
+      'Boston Red Sox': 111,
+      'Chicago Cubs': 112,
+      'Chicago White Sox': 145,
+      'Cincinnati Reds': 113,
+      'Cleveland Guardians': 114,
+      'Colorado Rockies': 115,
+      'Detroit Tigers': 116,
+      'Houston Astros': 117,
+      'Kansas City Royals': 118,
+      'Los Angeles Angels': 108,
+      'Los Angeles Dodgers': 119,
+      'Miami Marlins': 146,
+      'Milwaukee Brewers': 158,
+      'Minnesota Twins': 142,
+      'New York Mets': 121,
+      'New York Yankees': 147,
+      'Philadelphia Phillies': 143,
+      'Pittsburgh Pirates': 134,
+      'San Diego Padres': 135,
+      'Seattle Mariners': 136,
+      'San Francisco Giants': 137,
+      'St. Louis Cardinals': 138,
+      'Tampa Bay Rays': 139,
+      'Texas Rangers': 140,
+      'Toronto Blue Jays': 141,
+      'Washington Nationals': 120
+    };
+    const espnCodes = {
+      'Athletics': 'oak', 'Chicago White Sox': 'chw', 'Kansas City Royals': 'kc',
+      'San Diego Padres': 'sd', 'San Francisco Giants': 'sf', 'Tampa Bay Rays': 'tb'
+    };
+    function displayLogo(elementId, teamName) {
+      const el = $(elementId);
+      const teamId = teamIds[teamName];
+      if (!teamId) { el.hidden = true; return; }
+      el.hidden = false;
+      const espnCode = espnCodes[teamName] || (codes[teamName] || '').toLowerCase();
+      el.onerror = function() {
+        el.onerror = function() { el.hidden = true; };
+        el.src = `https://a.espncdn.com/i/teamlogos/mlb/500/${espnCode}.png`;
+      };
+      el.src = `https://www.mlbstatic.com/team-logos/${teamId}.svg`;
+    }
+
     const a = $('team-a'), b = $('team-b');
     for (const team of dataset) {
       a.add(new Option(team.name, team.name));
@@ -249,6 +314,11 @@
     a.value = byName.has(params.get('a')) ? params.get('a') : 'New York Yankees';
     b.value = byName.has(params.get('b')) ? params.get('b') : 'New York Mets';
     if (a.value === b.value) b.value = a.value === 'New York Mets' ? 'New York Yankees' : 'New York Mets';
+
+    displayLogo('select-logo-a', a.value);
+    displayLogo('select-logo-b', b.value);
+    a.addEventListener('change', () => displayLogo('select-logo-a', a.value));
+    b.addEventListener('change', () => displayLogo('select-logo-b', b.value));
 
     function render() {
       const t1 = byName.get(a.value), t2 = byName.get(b.value);
@@ -264,6 +334,8 @@
       $('name-b').textContent = t2.name;
       $('badge-a').textContent = codes[t1.name] || 'MLB';
       $('badge-b').textContent = codes[t2.name] || 'MLB';
+      displayLogo('result-logo-a', t1.name);
+      displayLogo('result-logo-b', t2.name);
       $('percent-a').textContent = shareA.toFixed(1) + '%';
       $('percent-b').textContent = shareB.toFixed(1) + '%';
       $('share-a').style.width = shareA + '%';
