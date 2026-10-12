@@ -1,32 +1,36 @@
-# Diamond Matchup — Editorial Light
+# Diamond Matchup
 
-A single-page, static MLB team matchup comparison site featuring Ryan's statistical scoring model.
+An MLB matchup predictor that compares teams using offensive and pitching statistics.
 
-## Site structure
+## About the Project
 
-- `index.html` — **the live homepage** at the root GitHub Pages URL; includes all layout and interaction code.
-- `scores.js` — team score data generated from the provided CSVs.
-- `build_scores.py` — reproducible Python script to regenerate `scores.js` (standard library only).
-- `source/` — Ryan's original Jupyter notebook and supplied batting / pitching datasets.
-- `.nojekyll` — keeps GitHub Pages serving the site as static files.
+Diamond Matchup uses a statistical scoring model to compare the relative strengths of MLB teams. The model combines offensive statistics (55%) and pitching statistics (45%) to generate a matchup comparison.
 
-There are **no** `v1/`, `v2/`, or design-selection pages. This package is the complete V2-only repository content and should be extracted **directly into the repository root**, not into an extra subfolder.
+The website allows users to select any two MLB teams and view their relative model scores.
 
-## Publish on GitHub Pages
+## How It Works
 
-1. Push the files to the repository's default `main` branch.
-2. In GitHub, open **Settings → Pages**.
-3. Set **Source** = **Deploy from a branch**, **Branch** = `main`, **Folder** = `/(root)` and save.
-4. The public site is at `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/` for an ordinary project repository.
+The predictor analyzes team batting and pitching data to calculate a weighted score for each team. These scores are then normalized to show each team's relative strength in a head-to-head comparison.
 
-## Recalculate the model data
+The displayed percentages represent relative model scores, not validated win probabilities.
 
-```powershell
-python .\build_scores.py
+## Project Files
+
+- `index.html` — Interactive website
+- `scores.js` — Calculated team scores
+- `build_scores.py` — Python script for generating team scores
+- `source/` — Original prediction notebook and MLB datasets
+
+## Running the Project
+
+The website is hosted through GitHub Pages and can be accessed directly through a web browser.
+
+To regenerate the team scores from the source data:
+
+```python
+python build_scores.py
 ```
 
-The website requires no backend, build tooling, or paid hosting. It works with the data snapshot in `scores.js`. The percentages shown are **relative normalized scoring shares**, not validated baseball win probabilities.
+## Author
 
-## Attribution and public sharing
-
-The original model and notebook were developed by Ryan; the website was implemented with assistance. Obtain Ryan's approval before publishing the notebook/data publicly. GitHub Pages hosting from a public repo exposes its committed files.
+Ryan — Statistical model and original Python implementation.
